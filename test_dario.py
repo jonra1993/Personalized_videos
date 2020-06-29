@@ -1,7 +1,7 @@
 class dog:
     def __init__(self, n, s):
         self.name = n
-        self.school = set
+        self.school = s
 
     def print_name(self):
         print(self.name)
