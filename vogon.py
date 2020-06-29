@@ -144,7 +144,6 @@ def generate_all_video_variations(project_dir):
 
 def generate_videos_final(config_file,preview_line, project_dir):
     """Generate custom videos according to the given configuration file name.
-
     The configuration file (JSON) is interpreted, and the specified video input
     is combined with the data in the specified data file (CSV) to generate an
     output video for each line in the data file.
