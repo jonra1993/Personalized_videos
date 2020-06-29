@@ -52,95 +52,7 @@ program_dir = os.path.abspath(os.path.dirname(__file__))
 stop_gen_threads = {}
 running_gen_threads = {}
 config_file =''
-def stop_video_generation(project_dir):
-  global stop_gen_threads, running_gen_threads
-  print("cancelling video generation for %s"%project_dir)
-  stop_gen_threads[project_dir] = True
-  while True:
-    if project_dir not in running_gen_threads or len(running_gen_threads[project_dir]) == 0:
-      stop_gen_threads[project_dir] = False
-      print("cancelled video generation for %s"%project_dir)
-      break
-    else:
-      time.sleep(1)
 
-def get_video_generation_percent(project_dir):
-  global stop_gen_threads, running_gen_threads
-  logs_dir = os.path.join( project_dir, "logs")
-  try:
-    logs = list(os.listdir(logs_dir))
-  except Exception as e:
-    logs = []
-  for log in logs:
-    if log[-4:] != ".log" or log[:17] != "video_generation_":
-      logs.remove(log)
-  if len(logs):
-    latest_log = sorted(logs)[-1]
-    name = latest_log[17:-4]
-    name = name.split("_")[0] + " " + name.split("_")[1].replace("-", ":")
-    percent = subprocess.check_output(['tail', '-1',
-                                        os.path.join(logs_dir, latest_log)])
-    return name, percent
-  else:
-    return "--", "--"
-
-def generate_all_video_variations(project_dir):
-  global stop_gen_threads, running_gen_threads
-  gen_id = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-
-  # setup logs
-  logs_uri = os.path.join( project_dir, "logs")
-  if not os.path.isdir(logs_uri):
-    os.mkdir(logs_uri)
-  current_log_uri = os.path.join(logs_uri, "video_generation_%s.log" % gen_id)
-  def logv(msg, log_type='a'):
-    with open(current_log_uri, log_type) as log_file:
-      if log_type == "a":
-        log_file.write("\n")
-      log_file.write("%s - %s!" % (msg,datetime.datetime.now()))
-      log_file.close()
-
-
-  try:
-    # setup config
-    config_uri = os.path.join( project_dir, "config.json")
-    config = load_config(config_uri)
-
-    # setup feed
-    data_uri = os.path.join( project_dir, "feed.csv")
-    data = read_csv_file(data_uri, ',')
-    lines = enumerate(data)
-    total_lines = len(data) + 0.0
-
-    # clears generated videos
-    output_uri = os.path.join( project_dir, "output")
-    shutil.rmtree(output_uri)
-    os.mkdir(output_uri)
-
-    # handle video generation threads
-    logv("[STARTED]", log_type="w")
-    stop_video_generation(project_dir)
-
-    # adds thread as runnig for project
-    if project_dir not in running_gen_threads:
-      running_gen_threads[project_dir] = [gen_id]
-    else:
-      running_gen_threads[project_dir].append(gen_id)
-
-    # creates videos
-    for i, row in lines:
-      if project_dir in stop_gen_threads and stop_gen_threads[project_dir]:
-        raise Exception("Receive request to cancel video generation.")
-      video = generate_video(config, row, (i + 1), project_dir)
-      logv("[RUNNIG] \n %s of %s (%.1f%%)"% (i , total_lines,(100*i/total_lines)))
-    if project_dir in running_gen_threads:
-      running_gen_threads[project_dir].remove(gen_id)
-    logv("[DONE]")
-  except Exception as e:
-    if project_dir in running_gen_threads:
-      running_gen_threads[project_dir].remove(gen_id)
-    logv("[FAIL] '%s'" % e)
 
 def generate_videos_final(config_file,preview_line, project_dir):
     """Generate custom videos according to the given configuration file name.
@@ -445,35 +357,6 @@ def image_and_video_filter(
 
   return img
 
-def process_screenshot(config, screenshot_time, video_path, output_path):
-    """Calls ffmpeg to generate the screenshot.
-
-    This function is the one that creates the screenshot.
-
-    Args:
-      ffmpeg_time_param: The time position to create the screenshot at in MM:SS
-          format.
-      video_path: The path to the video we want to generate screenshots
-          for.
-      output_path: The location to generate the screenshots.
-
-    Returns:
-      The full path to the generated screenshot.
-    """
-    ffmpeg_time = '00:' + screenshot_time
-    args = [config['ffmpeg_path']]
-    args += ['-i']
-    args += [video_path]
-    args += ['-ss']
-    args += [ffmpeg_time]
-    args += ['-vframes']
-    args += ['1']
-    args += ['-y']
-    args += [output_path]
-    logging.info(args)
-    subprocess.call(args)
-    return output_path
-
 def get_video_duration(video_file_path):
   """Gets the length in seconds of a video.
 
@@ -623,10 +506,6 @@ def write_temp_image(t_color, t_font, t_size, text_file_name, is_cropped_text):
 
     # return exported image
     return temp_file_name
-
-def escape_path(path):
-    """Escape Windows path slashes, colons and spaces, adding extra escape for ffmpeg."""
-    return path.replace('\\','\\\\\\\\').replace(':','\\\\:').replace(' ','\\\\ ')
 
 def load_config(config_file_name):
     """Load the JSON configuration file and return its structure."""

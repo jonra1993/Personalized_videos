@@ -112,6 +112,13 @@
       "width": 100
     }
   ],
+  "audio": [
+    {
+      "start_time": 1,
+      "end_time": 4,
+      "image": "{{record}}"
+    }
+  ],
   "output_video": "output_video_row_{{$id}}.mp4",
   "video_title": "Chegou loja do chapeu pros {{texto_nome_local}}!",
   "trix_url": "https://docs.google.com/spreadsheets/d/1H7G4B-V28CkP9juvBzj5yXJEnldIGChIwP1r9fVGmeA/edit?usp=drive_web&ouid=115310061757734498207"
