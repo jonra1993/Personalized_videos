@@ -128,11 +128,12 @@ def generate_video(config, row, row_num, project_dir):
     output_video = replace_vars(config['output_video'], row)
     output_video = os.path.join(project_dir, "output", output_video)
     base_video = os.path.join(project_dir, "assets", config['video'])
+    audio_video = os.path.join(project_dir, "assets", config['audio'])
     if 'ffmpeg_path' in config:
         ffmpeg = config['ffmpeg_path']
-        run_ffmpeg(img_args, complex_filters, base_video, output_video, executable=ffmpeg)
+        run_ffmpeg(img_args, complex_filters, base_video, output_video, audio_video, executable=ffmpeg)
     else:
-        run_ffmpeg(img_args, complex_filters, base_video, output_video)
+        run_ffmpeg(img_args, complex_filters, base_video, output_video,audio_video)
     return output_video
 
 def filter_strings(images, text_lines):
@@ -186,7 +187,7 @@ def filter_strings(images, text_lines):
     input_stream = output_stream
   return complex_filters, txt_input_files
 
-def run_ffmpeg(img_args, filters, input_video, output_video, executable='ffmpeg'):
+def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executable='ffmpeg'):
     """Run the ffmpeg executable for the given input and filter spec.
 
     Arguments:
@@ -195,15 +196,86 @@ def run_ffmpeg(img_args, filters, input_video, output_video, executable='ffmpeg'
     input_video -- main input video file name
     output_video -- output video file name
     """
+    # args = ([executable, '-y', '-i', input_video] + img_args +
+
     if input_video[0] != "/":
         input_video = os.path.join(program_dir, input_video)
-    args = ([executable, '-y', '-i', input_video] + img_args +
-            ['-filter_complex', ';'.join(filters), output_video])
+    # args = ([executable, '-y', '-i', input_video,'-i',audio_video]+[
+    #   '-map',' 1','-codec', 'copy','-shortest', output_video] )    
+    args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
+            ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
+    print(args)
+    print("*********************** FFMPEG LIST ARG")
     print(" ".join(args))
     try:
         subprocess.call(args)
     except Exception as e:
         print(e)
+
+
+def audio_inputs(audio, data_dir, text_tmp_images):
+  """Generates a list of input arguments for ffmpeg with the given images."""
+  include_cmd = []
+
+  # adds images as video starting on overlay time and finishing on overlay end
+  img_formats = ['gif', 'jpg', 'jpeg', 'png']
+  for ovl in images_and_videos:
+    filename = ovl['image']
+
+    # checks if overlay is image or video
+    is_img = False
+    for img_fmt in img_formats:
+      is_img = filename.lower().endswith(img_fmt)
+      if is_img:
+        break
+
+    # treats image overlay
+    if is_img:
+      duration = str(float(ovl['end_time']) - float(ovl['start_time']))
+
+      is_gif = filename.lower().endswith('.gif')
+      has_fade = (float(ovl.get('fade_in_duration', 0)) +
+                  float(ovl.get('fade_out_duration', 0))) > 0
+
+      # A GIF with no fade is treated as an animated GIF should.
+      # It works even if it is not animated.
+      # An animated GIF cannot have fade in or out effects.
+      if is_gif and not has_fade:
+        include_args = ['-ignore_loop', '0']
+      else:
+        include_args = ['-f', 'image2', '-loop', '1']
+
+      include_args += ['-itsoffset', str(ovl['start_time']), '-t', duration]
+
+      # GIFs should have a special input decoder for FFMPEG.
+      if is_gif:
+        include_args += ['-c:v', 'gif']
+
+      include_args += ['-i']
+      include_cmd += include_args + ['%s/assets/%s' % (data_dir,
+                                                                filename)]
+
+    # treats video overlays
+    else:
+      duration = str(float(ovl['end_time']) - float(ovl['start_time']))
+      include_args = ['-itsoffset', str(ovl['start_time']), '-t', duration]
+      include_args += ['-i']
+      include_cmd += include_args + ['%s/assets/%s' % (data_dir,
+                                                                filename)]
+
+  # adds texts as video starting and finishing on their overlay timing
+  for img2 in text_tmp_images:
+    duration = str(float(img2['end_time']) - float(img2['start_time']))
+
+    include_args = ['-f', 'image2', '-loop', '1']
+    include_args += ['-itsoffset', str(img2['start_time']), '-t', duration]
+    include_args += ['-i']
+
+    include_cmd += include_args + [str(img2['path'])]
+
+  return include_cmd
+
+
 
 def image_inputs(images_and_videos, data_dir, text_tmp_images):
   """Generates a list of input arguments for ffmpeg with the given images."""
@@ -371,8 +443,7 @@ def get_video_duration(video_file_path):
     FFMpegExecutionError: if the ffmpeg process returns an error
   """
   #group all args and runs ffmpeg
-  ffmpeg_output = self._info_from_ffmpeg(video_file_path,
-                                         self.ffmpeg_executable)
+  ffmpeg_output = self._info_from_ffmpeg(video_file_path, self.ffmpeg_executable)
   logging.info('ffmpeg ran with output:')
   logging.info(ffmpeg_output)
 
