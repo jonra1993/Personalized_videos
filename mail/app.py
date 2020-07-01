@@ -57,9 +57,9 @@ mpf.add_members_to_audience_function(
 # campaign creation
 # =============================================================================
 
-campaign_name = 'Bienvenida'
-from_name = 'Dario'
-reply_to = '41latino.foreverdc@gmail.com' # test1@gmail.com
+campaign_name = 'Bienvenida' #asunto
+from_name = 'Dario' #mensaje de nombre
+reply_to = '41latino.foreverdc@gmail.com' # test1@gmail.com  correo que envia el mensaje
 
 campaign = mpf.campaign_creation_function(campaign_name=campaign_name,
                                       audience_id=audience_creation['id'],
