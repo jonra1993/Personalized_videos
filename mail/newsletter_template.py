@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jan 12 15:16:06 2020
-
-@author: sherangagamwasam
 
 """
 
