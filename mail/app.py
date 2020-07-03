@@ -65,6 +65,7 @@ campaign = mpf.campaign_creation_function(campaign_name=campaign_name,
                                       audience_id=audience_creation['id'],
                                       from_name=from_name,
                                       reply_to=reply_to)
+                                    
 
 # =============================================================================
 # news letter tempates creation
