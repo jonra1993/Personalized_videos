@@ -21,10 +21,12 @@ client = MailChimp(
         mc_user = MC_USER_NAME)
 
 
+
 # =============================================================================
-# audience creation
+#a audience creation
 # =============================================================================
  
+
 def audience_creation_function(audience_creation_dictionary, client=client):
         
         audience_creation = ''
@@ -50,6 +52,8 @@ def audience_creation_function(audience_creation_dictionary, client=client):
                 "subject": "",
                 "language": audience_creation_dictionary['language']
             },
+            
+                     
             "email_type_option": False
         }
 
@@ -62,30 +66,59 @@ def audience_creation_function(audience_creation_dictionary, client=client):
 
 
 # =============================================================================
+# add merge fields
+# =============================================================================
+def add_mergefield(tag,name,field_type,default_value,list_id):
+
+    list_id=list_id
+    data = {
+            "name": name,
+            "type": field_type,
+            "tag": tag,
+            "public": True,
+            "default_value": default_value,
+        }
+
+    return client.lists.merge_fields.create(list_id, data)
+
+
+# =============================================================================
 # add members to the existing audience function
 # =============================================================================
 def add_members_to_audience_function(
         audience_id, 
         email_list, 
+        users_data,
         client=client):
         
         audience_id = audience_id
         email_list = email_list
+        users_data = users_data
 
         if len(email_list)!=0:
+            i=0
             for email_iteration in email_list:
+                i += 1
                 try:
                     data = {
                         "status": "subscribed",
-                        "email_address": email_iteration
+                        "email_address": email_iteration,
+                         'merge_fields': {
+                             'FNAME': users_data[0][i-1],
+                             'LNAME': users_data[1][i-1],
+                             'URLVIDEO': users_data[2][i-1]
+                            },
                     }
 
                     client.lists.members.create(list_id=audience_id, data=data)
 
                     print('{} has been successfully added to the {} audience'.format(email_iteration, audience_id))
 
+                 
+
                 except Exception as error:
                     print(error)
+            
 
         else:
             print('Email list is empty')
