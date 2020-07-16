@@ -204,6 +204,7 @@ def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executa
     #   '-map',' 1','-codec', 'copy','-shortest', output_video] )    
     args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
             ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
+
     print(args)
     print("*********************** FFMPEG LIST ARG")
     print(" ".join(args))

@@ -1,0 +1,143 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> Marketing Personalizado </title>
+
+  	{# Cargamos la librería #}
+	  {% load bootstrap4 %}
+
+	  {# CSS Bootstrap #}
+	  {% bootstrap_css %}
+
+
+  </head>
+
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #047cbc;">
+      <div class="container">
+        <a class="navbar-brand" href= "https://www.jrtec.io/">
+          <img src= "../static/page/images/jrtec.png", class="img-fluid">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            <a class="nav-link" href="/"> INICIO </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/aboutUS/" target="_blank">ACERCA DE NOSOTROS</a>
+            <!-- <span class="sr-only">(current)</span></a> -->
+          </li>
+            </ul>
+          <form name="bencc" method="get" action="http://www.google.com/search" id="bencc" class="form-inline mt-2 mt-md-0" target="_blank">
+            <input type="hidden" name="domains" value="blog.collectivecloudperu.com">
+            <input type="hidden" name="sitesearch" value="blog.collectivecloudperu.com">
+            <input class="form-control mr-sm-2" type="text" placeholder="Buscar..." aria-label="Buscar...">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="document.getElementById('bencc').submit()">Buscar</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    </header>
+
+
+    <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container-fluid">
+            <div class="row justify-content-around" >
+                <div class="card-deck">
+                  
+                    <div class="card" >
+                        <img class="card-img-top" src="../static/page/images/jenny1.jpeg"   alt="Card image cap" style="height:225px; object-fit:contain;">
+                        <h5 class="card-header">Jennifer Guayta</h5>
+                        <div class="card-body">
+                        <p class="card-text" style="font-size: 12pt; font-size-adjust: initial  ;" >Ingeniera en electrónica y Control de la Escuela Politécnica Nacional. 
+                            Tiene 24 años y reside en Quito. Es una gran apasionada por la tecnología lo que la impulsa a ser 
+                            desarrolladora en aplicaciones móviles y multiplataforma. Disfruta de un buen libro, un viaje para 
+                            explorar nuevos ambientes.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item">jenniferguayta@gmail.com</li>
+                        <li class="list-group-item">0997669768</li>
+                        </ul>
+                        <div class="card-body">
+                        <a href="https://github.com/JennyCGT" class="card-link">GitHub</a>
+                        <a href="https://www.linkedin.com/in/jennifer-guayta-4a48b114a/" class="card-link">Linkedin</a>
+                        </div>
+                    </div>
+    
+                    <div class="card" >
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <h5 class="card-header">Cristhian Cobos</h5>
+                        <div class="card-body">
+                        <p class="card-text">Ingeniera en electrónica y Control de la Escuela Politécnica Nacional. 
+                            Tiene 24 años y reside en Quito. Es una gran apasionada por la tecnología lo que la impulsa a ser 
+                            desarrolladora en aplicaciones móviles y multiplataforma. Disfruta de un buen libro, un viaje para 
+                            explorar nuevos ambientes.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item">cristhian_cosmico@hotmail.com</li>
+                        <li class="list-group-item">0997669768</li>
+                        </ul>
+                        <div class="card-body">
+                        <a href="#" class="card-link">GitHub</a>
+                        <a href="#" class="card-link">Linkedin</a>
+                        </div>
+                    </div>
+        
+                    <div class="card" >
+                        <img class="card-img-top" src="..." alt="Card image cap">
+                        <h5 class="card-header">Dario Cabascango</h5>
+                        <div class="card-body">
+                        <p class="card-text">Ingeniera en electrónica y Control de la Escuela Politécnica Nacional. 
+                            Tiene 24 años y reside en Quito. Es una gran apasionada por la tecnología lo que la impulsa a ser 
+                            desarrolladora en aplicaciones móviles y multiplataforma. Disfruta de un buen libro, un viaje para 
+                            explorar nuevos ambientes.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item">jenniferguayta@gmail.com</li>
+                        <li class="list-group-item">0997669768</li>
+                        </ul>
+                        <div class="card-body">
+                        <a href="#" class="card-link">GitHub</a>
+                        <a href="#" class="card-link">Linkedin</a>
+                        </div>
+                    </div>
+    
+                </div>
+
+            </div>
+
+        </div>
+      </section>
+
+
+    <footer class="text-muted">
+        <div class="container">
+          <p class="float-right">
+            <a href="#">Subir</a>
+          </p>
+        </div>
+        <div align="center">
+          Desarrollado por <a href="https://www.jrtec.io/" target="_blank">JRTEC</a>
+      </div> 
+    </footer>
+
+    {# JS y jQuery Bootstrap #}
+	{% bootstrap_javascript jquery='full' %}
+
+    
+  </body>
+</html>
