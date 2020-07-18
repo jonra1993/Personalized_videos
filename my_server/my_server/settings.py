@@ -39,9 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',  # added to solve CORS
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # added to solve CORS
+    'django.middleware.common.CommonMiddleware',  # added to solve CORS
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,7 +60,7 @@ ROOT_URLCONF = 'my_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend_app')],  #Look, we have added the root folder of frontend here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,3 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'frontend_app', "build", "static"),  # update the STATICFILES_DIRS
+)
+CORS_ORIGIN_ALLOW_ALL = True # added to solve CORS
