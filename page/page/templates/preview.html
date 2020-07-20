@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title> Marketing Personalizado </title>
+
+  {# Cargamos la librería #}
+  {% load bootstrap4 %}
+
+  {# CSS Bootstrap #}
+  {% bootstrap_css %}
+
+
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #047cbc;">
+      <div class="container">
+        <a class="navbar-brand" href="https://www.jrtec.io/">
+          <!-- <img src="../static/page/images/jrtec.png" , class="img-fluid"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07"
+          aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href=""> INICIO
+                <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'aboutus' %}">ACERCA DE NOSOTROS </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+
+  <main role="main">
+    <section class="container">
+      <div class="container ">
+        <div class="jumbotron " style="margin-top: 1rem;">
+          <div class="card" style="margin: 2rem;">
+            <div class=" card-header">
+              <div class="row">
+                <h4 style="color: #091540;margin-left: 2rem;"> Preview del video
+                </h4>
+              </div>
+            </div>
+            <div class="card-body ">
+              {% if aux == 1 %}  
+              <div class="alert alert-success" role="alert">
+                A simple primary alert—check it out!
+              </div>
+              {% endif %}
+            </div>
+       
+          </div>
+
+
+        </div>
+
+    </section>
+
+    <br> <br>
+
+    <footer class="text-muted">
+      <div class="container">
+        <p class="float-right">
+          <a href="#">Subir</a>
+        </p>
+      </div>
+      <div align="center">
+        Desarrollado por <a href="https://www.jrtec.io/" target="_blank">JRTEC</a>
+      </div>
+    </footer>
+
+    {# JS y jQuery Bootstrap #}
+    {% bootstrap_javascript jquery='full' %}
+
+
+</body>
+
+</html>

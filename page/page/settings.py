@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap4'
+    'bootstrap4',
+    'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -122,4 +124,10 @@ STATICFILES_DIRS = [ os.path.join(os.path.dirname(os.path.realpath(__file__)),"s
 STATIC_URL = '/static/'
 
 
-
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

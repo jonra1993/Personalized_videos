@@ -25,7 +25,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #047cbc;">
       <div class="container">
         <a class="navbar-brand" href="https://www.jrtec.io/">
-          <img src="../static/page/images/jrtec.png" , class="img-fluid">
+          <!-- <img src="../static/page/images/jrtec.png" , class="img-fluid"> -->
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07"
           aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,14 +42,6 @@
               <a class="nav-link" href="{% url 'aboutus' %}">ACERCA DE NOSOTROS </a>
             </li>
           </ul>
-          <form name="bencc" method="get" action="http://www.google.com/search" id="bencc"
-            class="form-inline mt-2 mt-md-0" target="_blank">
-            <input type="hidden" name="domains" value="blog.collectivecloudperu.com">
-            <input type="hidden" name="sitesearch" value="blog.collectivecloudperu.com">
-            <input class="form-control mr-sm-2" type="text" placeholder="Buscar..." aria-label="Buscar...">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
-              onclick="document.getElementById('bencc').submit()">Buscar</button>
-          </form>
         </div>
       </div>
     </nav>
@@ -57,45 +49,61 @@
 
 
   <main role="main">
-    <section class="jumbotton">
-      <div class="container">
-        <div class="jumbotron jumbotron-heading">
-          <h1> Marketing Personalizado</h1>
-        </div>
-        <div class="card text-center">
-          <div class="card-header">
-            <h2>Cargar archivos  </h2>
+    <section class="container">
+      <div class="container ">
+        <div class="jumbotron " style="margin-top: 1rem;">
+          <h1 class="text-center" style="color: #091540"> Marketing Personalizado</h1>
+          <div class="card text-center" style="margin: 2rem;">
+            <div class="card-header">
+              <h2>Cargar archivo</h2>
+            </div>
+            <div class="card-body">
+              <!-- <h5 class="card-title">Special title treatment</h5> -->
+              <p class="card-text">Suba el archivo en formato CSV</p>
+              <a href="#" class="btn btn-primary">Subir</a>
+            </div>
           </div>
-          <div class="card-body">
-            <!-- <h5 class="card-title">Special title treatment</h5> -->
-            <p class="card-text">Suba el archivo en formato CSV</p>
-            <a href="#" class="btn btn-primary">Subir</a>
-          </div>
-        </div>
-        <br>
-        <div class="container">
-          <div class="row">
-            <h4 class=" jumbotron-heading"style="color: #091540;" > Generacion de videos personalizados 
-            </h4>
-            <form action="" method="POST" >
-              {% csrf_token%}
-              <!-- <a type="submit" class="btn btn-primary"  name="Generar" style="right: initial;color: #ffffff;"  >Generar </a> -->
-              <!-- <input type="button" class="btn btn-primary" value="Click" name="Generar"> -->
-              <button  type="submit" class="btn btn-primary" name="generar" style="position: absolute;right: 4rem;">Generar</button>
-            </form>
-  
+          <br>
+          <div class="card" style="margin: 2rem;">
+            <div class=" card-header">
+              <div class="row">
+                <h4 style="color: #091540;margin-left: 2rem;"> Generacion de videos personalizados
+                </h4>
+                <form method="POST">
+                  {% csrf_token%}
+                  <!-- {{form.as_p}} -->
+                  <button type="submit" class="btn btn-primary" name="generar"
+                    style="position: absolute;right: 2rem;">Generar</button>
+                </form>
+              </div>
+            </div>
+            {% if load == 1 %}
+            <div class="card-body ">
+              <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% if video == 100 %}
+            <div class="card-body ">
+              <h2>Previa del video </h2>
+              <video width="320" height="240" controls>
+                <source src="../static/page/videos/static_video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            {% endif %}
+
           </div>
 
-          <!-- <p class="h6">Se gener </p> -->
-          <hr class="my-4">
+
         </div>
-
-
-      </div>
 
     </section>
 
-
+    <br> <br>
 
     <footer class="text-muted">
       <div class="container">
