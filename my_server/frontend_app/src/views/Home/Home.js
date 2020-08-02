@@ -6,13 +6,17 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import AppTopBar from '../../components/AppTopBar/AppTopBar'
 import axios from 'axios'
+
+// Hooks tell React that your component needs to do something after render
 
 export default function Home(props) {
   // Create a state spacing with default value of 2
 
   const [counter, setCounter] = useState(2);
-  const [data, loadData] = useState(null)
+  const [data, setData] = useState({ hits: [] });
+  const [query, setQuery] = useState('react');
 
   const classes = useStyles();
 
@@ -23,23 +27,37 @@ export default function Home(props) {
 
 
   // Similar to componentDidMount and componentDidUpdate no []:
-  //useEffect(() => {
-    // Update the document title using the browser API
-  //  document.title = `You clicked ${count} times`;
-  //});
-
-  // similar to  componentDidMount(), after first render []
+  //  it runs both after the first render and after every update
+  // effects happen “after render”
   useEffect(() => {
-    async function fetchData(){
-      let listItems = await axios(
-        'GET https://od-api-demo.oxforddictionaries.com:443/api/v1/domains/en/es'
-      )
-      loadData(listItems.data)
-      console.log('hello')
-      console.log(listItems.data)
+    // Update the document title using the browser API
+    console.log('components have been updated ');
+  });
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      //setIsOnline(status.isOnline);
     }
+    //ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    
+    // Specify how to clean up after this effect as component willunmount
+    return function cleanup() {
+      //ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+  
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchData() {
+      const result = await axios('https://hn.algolia.com/api/v1/search?query=' + query);
+      if (!ignore) setData(result.data);
+    }
+
     fetchData();
-  }, [])
+    return () => { ignore = true; }
+  }, [query]);
+
 
   const incrementCounter = () => {
     setCounter(counter + 1);
@@ -50,6 +68,9 @@ export default function Home(props) {
 
   return (
     <div className={classes.root}>
+      <AppTopBar text1 = {'Hello'} text2 = {'Chao'} data = {{text1:'Hi', text2:'Ho'}}>
+
+      </AppTopBar>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>xs=12</Paper>
@@ -61,7 +82,16 @@ export default function Home(props) {
           <Paper className={classes.paper}>xs=6</Paper>
         </Grid>
         <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
+          <Paper className={classes.paper}>
+            <input value={query} onChange={e => setQuery(e.target.value)} />
+            <ul>
+              {data.hits.map(item => (
+                <li key={item.objectID}>
+                  <a href={item.url}>{item.title}</a>
+                </li>
+              ))}
+            </ul>
+          </Paper>
         </Grid>
         <Grid item xs={3}>
           <Paper className={classes.paper}>
