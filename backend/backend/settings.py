@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'storages',
-    'apps.create_video_api',
+    'apps.create_videos_api',
     'apps.files',
 ]
 
@@ -124,18 +124,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-REST_FRAMEWORK = {
-    # Use hyperlinked styles by default.
-    # Only used if the `serializer_class` attribute is not set on a view.
-    'DEFAULT_MODEL_SERIALIZER_CLASS':
-        'rest_framework.serializers.HyperlinkedModelSerializer',
-
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -148,18 +136,19 @@ REST_FRAMEWORK = {
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = 'AKIAZFWLHBSM5Y55Z4UR'
 AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'assetsbackend'
+AWS_STORAGE_BUCKET_NAME = 'jenny-backend'
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
-AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
-STATIC_URL = 'https://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
+AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.us-east-2.amazonaws.com'
+STATIC_URL = 'https://' + AWS_STORAGE_BUCKET_NAME + '.s3.us-east-2.amazonaws.com/'
+# 'https://jenny-backend.s3.us-east-2.amazonaws.com/'
 # STATIC_URL = 'https://s3.amazonaws.com/%s/static/' % AWS_STORAGE_BUCKET_NAME
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles'), ]
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'# # STATIC_ROOT = 'staticfiles'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles'), ]
 # # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# # MEDIA_URL = STATIC_URL + 'media/'
+# MEDIA_URL = STATIC_URL + 'media/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -167,4 +156,4 @@ STATICFILES_FINDERS = (
 )
 
 MEDIA_URL = '/mediafiles/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 
