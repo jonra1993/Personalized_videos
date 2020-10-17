@@ -56,7 +56,7 @@ class CreatevideosView(APIView):
                     djangofile = File(local_file, name=video)
                     video_obj = Videos.objects.create(video= djangofile, first_name =row['Nombre'], last_name=row['Apellido'])
                     obj.videos.add(video_obj)
-
+                    os.remove(video)
                 ser = CreateGetSerializer(obj)
 
                 res = self.message("Videos creados",status.HTTP_200_OK,"",ser.data)
