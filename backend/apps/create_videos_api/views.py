@@ -26,10 +26,6 @@ class CreatevideosView(APIView):
         
         return res
         
-    # Create your views here.
-    # context = {'video': video, 'load': load }
-    # template_name = 'index.html'
-    # video_path = "Project/assets/base_video.mp4"
 
     def post(self, request):
         data = request.data

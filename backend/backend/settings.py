@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'storages',
     'apps.create_videos_api',
     'apps.files',
+    'apps.app',
+
 ]
 
 MIDDLEWARE = [
