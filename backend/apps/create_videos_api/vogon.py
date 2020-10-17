@@ -44,14 +44,13 @@ import shutil
 import subprocess
 import tempfile
 import time
-from apps.files.models import Videos
+from django.core.files.storage import default_storage
+from apps.files.models import Videos, Files
 from oauth2client.tools import argparser
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files import File
 from os.path import basename
-import cv2
-import skvideo.io
 
 program_dir = os.path.abspath(os.path.dirname(__file__))
 stop_gen_threads = {}
@@ -76,7 +75,6 @@ def generate_videos_final(config_file,preview_line, project_dir):
         video = generate_video(config, row, (i + 1), project_dir)
         print("VIDEO PATH", video)
         print("VIDEO TYPE", type(video))
-        # local_file = cv2.VideoCapture(video)
         # success,image = local_file.read()
         # local_file = skvideo.io.vread(video)
         local_file = open(video, 'rb')   
@@ -521,6 +519,31 @@ def read_csv_file(file_name, delimiter):
             print(row)
             data.append(row)
         csv_file.close()
+    return data
+def read_csv_file_database(pk, delimiter):
+    """Read a CSV file and return a list of the records in it.
+
+    Return a list of dictionaries. The keys for each dict are taken from the
+    first line of the CSV, which is considered the header.
+
+    Arguments:
+    file_name -- CSV file name
+    delimiter -- character to be used as column delimiter
+    """
+    data = []
+    obj= Files.objects.get(pk=pk)
+    # csv_file = csv_file.file.read()
+    # csv_file = obj.file.read().decode('utf-8').splitlines()
+    csv_data = csv.DictReader(chunk.decode() for chunk in obj.file)
+    # csv_data = csv.DictReader((l.replace('\0', '') for l in csv_file))
+    # csv_data = csv.DictReader((l.replace('\0', '') for l in csv_file))
+    for line in csv_data:
+        row = {}
+        for field in line:
+          row[field] = line[field]
+        print(row)
+        data.append(row)
+    # csv_file.close()
     return data
 
 def test_replace_vars():
