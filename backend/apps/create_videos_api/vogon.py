@@ -122,7 +122,7 @@ def generate_video(config, row, row_num, project_dir):
     img_args = image_inputs(image_overlays, project_dir, txt_input_files)
     output_video = replace_vars(config['output_video'], row)
     # output_video = 'https://jenny-backend.s3.us-east-2.amazonaws.com/'+output_video
-    # output_video = os.path.join(project_dir, output_video)
+    # output_video = os.path.join(settings.BASE_DIR, project_dir, output_video)
     base_video = os.path.join(project_dir, "assets", config['video'])
     audio_video = os.path.join(project_dir, "assets", config['audio'])
     if 'ffmpeg_path' in config:
@@ -208,13 +208,16 @@ def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executa
     #         ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest',
     #          '-movflags', 'frag_keyframe+empty_moov', 'pipe:1', '| aws s3 cp', '- s3','//jenny-backend.s3.us-east-2.amazonaws.com/videos/'+output_video ])
             # 'pipe:'+output_video +'| aws s3 cp - s3://jenny-backend.s3.us-east-2.amazonaws.com/videos/ '])
-    print(args)
+    # print(args)
     print("*********************** FFMPEG LIST ARG")
     print(" ".join(args))
+    print("*********************** START FFMPEG LIST CREATE")
     try:
         subprocess.call(args)
+        print("****************CREATE VIDEO ****************************")
     except Exception as e:
         print(e)
+    print("*********************** FINISH FFMPEG LIST CREATE")
 
 def image_inputs(images_and_videos, data_dir, text_tmp_images):
   """Generates a list of input arguments for ffmpeg with the given images."""

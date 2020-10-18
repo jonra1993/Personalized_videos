@@ -29,7 +29,7 @@ SECRET_KEY = 'wpd_paa#65b0roc3^51e2vd+96af#gbzv1637wj1!3z7t5^v4#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["test-backend-dev2.us-east-2.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["test-backend-dev2.us-east-2.elasticbeanstalk.com","172.31.13.185",'localhost']
 
 
 # Application definition
@@ -100,16 +100,16 @@ else:
     DATABASES = {         
         'default': {             
             'ENGINE': 'django.db.backends.postgresql_psycopg2',             
-            'NAME': os.environ['RDS_DB_NAME'],             
-            'USER': os.environ['RDS_USERNAME'],             
-            'PASSWORD': os.environ['RDS_PASSWORD'],             
-            'HOST':  os.environ['RDS_HOSTNAME'],          
-            'PORT':  os.environ['RDS_PORT'],          
+            'NAME': "Marketing",             
+            'USER': "admin",             
+            'PASSWORD': "admin",             
+            'HOST':  "127.0.0.1",          
+            'PORT':  "5432",          
         }
     }
 
         
-
+CORS_ORIGIN_ALLOW_ALL=True
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -152,26 +152,31 @@ USE_TZ = True
 # STATIC_URL = '/staticfiles/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+if 'RDS_DB_NAME' in os.environ:     
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = os.environ['AWS_KEY']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_KEY']
-AWS_STORAGE_BUCKET_NAME = 'jenny-backend'
-AWS_S3_REGION_NAME = 'us-east-2'
-AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
-AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.us-east-2.amazonaws.com'
-STATIC_URL = 'https://' + AWS_STORAGE_BUCKET_NAME + '.s3.us-east-2.amazonaws.com/'
-# 'https://jenny-backend.s3.us-east-2.amazonaws.com/'
-# STATIC_URL = 'https://s3.amazonaws.com/%s/static/' % AWS_STORAGE_BUCKET_NAME
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles'), ]
-# # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = STATIC_URL + 'media/'
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-STATICFILES_FINDERS = (
-'django.contrib.staticfiles.finders.FileSystemFinder',
-'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = os.environ['AWS_KEY']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_KEY']
+    AWS_STORAGE_BUCKET_NAME = 'jenny-backend'
+    AWS_S3_REGION_NAME = 'us-east-2'
+    AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
+    AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.us-east-2.amazonaws.com'
+    STATIC_URL = 'https://' + AWS_STORAGE_BUCKET_NAME + '.s3.us-east-2.amazonaws.com/'
+    # 'https://jenny-backend.s3.us-east-2.amazonaws.com/'
+    # STATIC_URL = 'https://s3.amazonaws.com/%s/static/' % AWS_STORAGE_BUCKET_NAME
+    # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles'), ]
+    # # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    # MEDIA_URL = STATIC_URL + 'media/'
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+    STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    )
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/mediafiles/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles') 

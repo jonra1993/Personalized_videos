@@ -143,7 +143,7 @@
             "width": 500
         }            
     ],
-    "output_video": "video{{$id}}.mp4",
+    "output_video": "video_{{Nombre}}_{{Apellido}}.mp4",
     "video_title": "Hola{{texto_nome_local}}!",
     "trix_url": "https://docs.google.com/spreadsheets/d/1H7G4B-V28CkP9juvBzj5yXJEnldIGChIwP1r9fVGmeA/edit?usp=drive_web&ouid=115310061757734498207"
 }
