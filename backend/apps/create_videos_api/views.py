@@ -59,7 +59,7 @@ class CreatevideosView(APIView):
             else:
                 res = self.message("Campana no creada",status.HTTP_200_OK,"",[])
         else:
-            res = self.message("Error",status.HTTP_200_OK,"",[])
+            res = self.message("Error",status.HTTP_200_OK,"",serializer.errors)
 
         return Response(res, res['status'])
         # return Response("holi")
@@ -102,3 +102,6 @@ class FilesView(APIView):
 
 
 
+class HealthyView(APIView):
+    def get(self,request):
+        return Response("OK", status.HTTP_200_OK)

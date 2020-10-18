@@ -29,7 +29,7 @@ SECRET_KEY = 'wpd_paa#65b0roc3^51e2vd+96af#gbzv1637wj1!3z7t5^v4#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["test-backend-dev2.us-east-2.elasticbeanstalk.com"]
 
 
 # Application definition
@@ -85,14 +85,30 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if 'RDS_DB_NAME' in os.environ:     
+    DATABASES = {         
+        'default': {             
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',             
+            'NAME': os.environ['RDS_DB_NAME'],             
+            'USER': os.environ['RDS_USERNAME'],             
+            'PASSWORD': os.environ['RDS_PASSWORD'],             
+            'HOST':  os.environ['RDS_HOSTNAME'],          
+            'PORT':  os.environ['RDS_PORT'],          
+        }
+    }     
+else:
+    DATABASES = {         
+        'default': {             
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',             
+            'NAME': os.environ['RDS_DB_NAME'],             
+            'USER': os.environ['RDS_USERNAME'],             
+            'PASSWORD': os.environ['RDS_PASSWORD'],             
+            'HOST':  os.environ['RDS_HOSTNAME'],          
+            'PORT':  os.environ['RDS_PORT'],          
+        }
     }
-}
 
+        
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -139,8 +155,8 @@ USE_TZ = True
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = 'AKIAZFWLHBSM5Y55Z4UR'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.environ['AWS_KEY']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_KEY']
 AWS_STORAGE_BUCKET_NAME = 'jenny-backend'
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_QUERYSTRING_AUTH = False #This will make sure that the file URL does not have unnecessary parameters like your access key.
