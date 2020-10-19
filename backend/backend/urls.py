@@ -18,11 +18,13 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from apps.create_videos_api import urls
 from apps.create_videos_api.views import HealthyView
+from apps.send_email import urls
 from django.conf import settings
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('apps.create_videos_api.urls')),
+    path('api/',include('apps.create_email.urls')),
     path('',HealthyView.as_view())
 ]+static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
