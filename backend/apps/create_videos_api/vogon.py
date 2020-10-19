@@ -196,19 +196,16 @@ def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executa
 
     if input_video[0] != "/":
         input_video = os.path.join(program_dir, input_video)
-    # args = ([executable, '-y', '-i', input_video,'-i',audio_video]+[
+    ####### SIN AUDIO ######################
+    # args = ([executable, '-y', '-i', input_video]+ img_args +[
     #   '-map',' 1','-codec', 'copy','-shortest', output_video] )    
+    # args = ([executable, '-y', '-i', input_video] + img_args +
+    #         ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
 
     ############# ESTE SI FUNCIONA###
     args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
             ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
 
-    # ######## TEST 
-    # args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
-    #         ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest',
-    #          '-movflags', 'frag_keyframe+empty_moov', 'pipe:1', '| aws s3 cp', '- s3','//jenny-backend.s3.us-east-2.amazonaws.com/videos/'+output_video ])
-            # 'pipe:'+output_video +'| aws s3 cp - s3://jenny-backend.s3.us-east-2.amazonaws.com/videos/ '])
-    # print(args)
     print("*********************** FFMPEG LIST ARG")
     print(" ".join(args))
     print("*********************** START FFMPEG LIST CREATE")

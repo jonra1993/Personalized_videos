@@ -16,7 +16,12 @@ from django.core.files import File
 from os.path import basename
 from threading import Thread
 
+def marketing_video(pk):
+    print(pk)
+
 global preview
+preview = Thread(target= marketing_video , args=([1]))
+
 class CreatevideosView(APIView):
 
     def message(self, message, status, meta, data):
@@ -30,7 +35,7 @@ class CreatevideosView(APIView):
     def get(self, request):
         global preview
         if (preview.is_alive()):
-            res = self.message("Creando videos",status.HTTP_403_FORBIDDEN,"",[])
+            res = self.message("Creando videos",status.HTTP_400_BAD_REQUEST,"",[])
         else:
             res = self.message("Videos creados",status.HTTP_200_OK,"",[])
 
@@ -44,10 +49,17 @@ class CreatevideosView(APIView):
         if(serializer.is_valid()):
             obj = self.get_obj(data['pk'])
             if(obj is not None):
-                preview = Thread(target= self.marketing_video , args=([data['pk']]))
-                preview.start()
-                print("Thread",preview)
-                # if (preview.is_alive()):
+                print(preview.is_alive())
+                if (preview.is_alive()):
+                    print("Thread in proccess")                                                                                                                                                                                                                                                             
+                    ser = CreateGetSerializer(obj)
+                    res = self.message("Creando videos",status.HTTP_400_BAD_REQUEST,"",ser.data)
+                else:                                                                                                                                                                                                                                                               
+                    print("Stat Thread")
+                    preview = Thread(target= self.marketing_video , args=([data['pk']]))
+                    preview.start()
+                    ser = CreateGetSerializer(obj)
+                    res = self.message("Inicio de la creacion de videos",status.HTTP_200_OK,"",ser.data)
                 #     res = self.message("Creando videos",status.HTTP_403_FORBIDDEN,"",[])
                 # else:
 
@@ -69,9 +81,6 @@ class CreatevideosView(APIView):
                 #     video_obj = Videos.objects.create(video= djangofile, first_name =row['Nombre'], last_name=row['Apellido'])
                 #     obj.videos.add(video_obj)
                 #     os.remove(video)
-                ser = CreateGetSerializer(obj)
-
-                res = self.message("Creando campana",status.HTTP_200_OK,"",ser.data)
             else:
                 res = self.message("Campana no creada",status.HTTP_200_OK,"",[])
         else:
@@ -91,19 +100,21 @@ class CreatevideosView(APIView):
         print(pk)
         obj = self.get_obj(pk)
         project_dir = os.path.join (os.path.dirname(os.path.abspath(__file__)) ,"Project") 
-        config_file = os.path.join (os.path.dirname(os.path.abspath(__file__)) ,"Project/config.json")
+        config_file = os.path.join (os.path.dirname(os.path.abspath(__file__)) ,"Project/config_1.json")
         print(project_dir)
         print(config_file)
         config = vogon.load_config(config_file)
         data = vogon.read_csv_file_database(obj.csv_file.pk,',')
+        print(data)
         lines = enumerate(data)
         for i, row in lines:
             video = vogon.generate_video(config, row, (i + 1), project_dir)
+            # video = vogon.generate_video(config, data[1],2, project_dir)
             print("VIDEO PATH", video)
             print("VIDEO TYPE", type(video))
             local_file = open(video, 'rb')   
             print("VIDEO TYPE", type(local_file))
-            djangofile = File(local_file, name=video)
+            djangofile = File(local_file, name=row['Nombre']+video)
             # djangofile = File(local_file, name=row['Nombre']+"_"+row['Apellido']+".mp4")
             video_obj = Videos.objects.create(video= djangofile, first_name =row['Nombre'], last_name=row['Apellido'])
             obj.videos.add(video_obj)
@@ -127,7 +138,7 @@ class FilesView(APIView):
             file = Files.objects.create(file = data['csv_file'])
             obj = Campaign.objects.create(campaign= data['campaign'], csv_file = file)
             serializer = FileGetSerializer(obj)
-            res = self.message("Camapana creada exitosamente",status.HTTP_201_CREATED,"",serializer.data )      
+            res = self.message("CSV cargado  exitosamente",status.HTTP_200_OK,"",serializer.data )      
 
         else:
             res = self.message("Datos erroneos", status.HTTP_400_BAD_REQUEST,"",serializer.errors)
@@ -143,3 +154,4 @@ class FilesView(APIView):
 class HealthyView(APIView):
     def get(self,request):
         return Response("OK", status.HTTP_200_OK)
+
