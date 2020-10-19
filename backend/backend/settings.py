@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'apps.create_videos_api',
     'apps.files',
     'apps.app',
-
+    'apps.send_email'
 ]
 
 MIDDLEWARE = [

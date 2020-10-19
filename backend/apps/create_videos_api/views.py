@@ -35,7 +35,7 @@ class CreatevideosView(APIView):
     def get(self, request):
         global preview
         if (preview.is_alive()):
-            res = self.message("Creando videos",status.HTTP_400_BAD_REQUEST,"",[])
+            res = self.message("Creando videos",status.HTTP_202_ACCEPTED,"",[])
         else:
             res = self.message("Videos creados",status.HTTP_200_OK,"",[])
 
@@ -53,7 +53,7 @@ class CreatevideosView(APIView):
                 if (preview.is_alive()):
                     print("Thread in proccess")                                                                                                                                                                                                                                                             
                     ser = CreateGetSerializer(obj)
-                    res = self.message("Creando videos",status.HTTP_400_BAD_REQUEST,"",ser.data)
+                    res = self.message("Creando videos",status.HTTP_202_ACCEPTED,"",ser.data)
                 else:                                                                                                                                                                                                                                                               
                     print("Stat Thread")
                     preview = Thread(target= self.marketing_video , args=([data['pk']]))
@@ -116,7 +116,7 @@ class CreatevideosView(APIView):
             print("VIDEO TYPE", type(local_file))
             djangofile = File(local_file, name=row['Nombre']+video)
             # djangofile = File(local_file, name=row['Nombre']+"_"+row['Apellido']+".mp4")
-            video_obj = Videos.objects.create(video= djangofile, first_name =row['Nombre'], last_name=row['Apellido'])
+            video_obj = Videos.objects.create(video= djangofile, email=row['Correo'] ,first_name =row['Nombre'], last_name=row['Apellido'])
             obj.videos.add(video_obj)
             os.remove(video)
 

@@ -26,6 +26,7 @@ audience_creation_dictionary = {
 }    
    
 audience_creation = mpf.audience_creation_function(audience_creation_dictionary)
+print(audience_creation)
 # add merge fields
 merge_creation = mpf.add_mergefield('URLVIDEO','Video usuario', 'url','',audience_creation['id'])
 print(merge_creation)

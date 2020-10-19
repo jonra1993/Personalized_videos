@@ -1,6 +1,3 @@
 {
-<<<<<<< HEAD
-=======
-    "python.pythonPath": "C:\\Users\\Cristhian\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
->>>>>>> origin/cristian
+    "python.pythonPath": "env/bin/python"
 }

@@ -203,8 +203,9 @@ def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executa
     #         ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
 
     ############# ESTE SI FUNCIONA###
+    ## map es el total de textooooo+imagenes+1
     args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
-            ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
+            ['-filter_complex', ';'.join(filters),'-map',' 6','-shortest', output_video])
 
     print("*********************** FFMPEG LIST ARG")
     print(" ".join(args))
