@@ -237,7 +237,7 @@ html_code = """
 </table>
 <div align="center" class="img-container center autowidth" style="padding-right: 0px;padding-left: 0px;">
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 0px;padding-left: 0px;" align="center"><![endif]-->
-<div style="font-size:1px;line-height:20px"> </div><a href="https://www.jrtec.io/" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center autowidth" src="https://www.jrtec.io/wp-content/uploads/2019/12/cropped-logoV1-3.png" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 165px; display: block;" title="Logo" width="165"/></a>
+<div style="font-size:1px;line-height:20px"> </div><a href="https://www.jrtec.io/" style="outline:none" tabindex="-1" target="_blank"> <img align="center" alt="Logo" border="0" class="center autowidth" src="https://jenny-backend.s3.us-east-2.amazonaws.com/WhatsApp+Image+2020-10-19+at+19.55.37.jpeg" style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 165px; display: block;" title="Logo" width="165"/></a>
 <div style="font-size:1px;line-height:25px"> </div>
 <!--[if mso]></td></tr></table><![endif]-->
 </div>
@@ -502,6 +502,9 @@ html_code = """
 </body>
 </html>
 			
+   		
+
+
    		
 """
 
