@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from apps.files.models import Videos
-
+from random import *
 
 class EmailSerializer(serializers.Serializer):
     class Meta:
@@ -14,7 +14,7 @@ class EmailSerializer(serializers.Serializer):
             "merge_fields": {
                 "FNAME": instance.first_name,
                 "LNAME": instance.last_name,
-                "URLVIDEO": instance.video.url
+                "URLVIDEO": "http://localhost:3000/"+str(instance.video)+"/"+str(randint(1,3))
             }
         
         }
