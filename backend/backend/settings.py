@@ -29,7 +29,8 @@ SECRET_KEY = 'wpd_paa#65b0roc3^51e2vd+96af#gbzv1637wj1!3z7t5^v4#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["test-backend-dev2.us-east-2.elasticbeanstalk.com","172.31.13.185",'localhost']
+ALLOWED_HOSTS = ["test-backend-dev2.us-east-2.elasticbeanstalk.com","172.31.13.185",'localhost','https://video.jrtec-test.tk',
+"video.jrtec-test.tk"]
 
 
 # Application definition

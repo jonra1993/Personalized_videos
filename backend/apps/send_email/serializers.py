@@ -14,7 +14,7 @@ class EmailSerializer(serializers.Serializer):
             "merge_fields": {
                 "FNAME": instance.first_name,
                 "LNAME": instance.last_name,
-                "URLVIDEO": "http://localhost:3000/"+str(instance.video)+"/"+str(randint(1,3))
+                "URLVIDEO": "https://videos-person.web.app/"+str(instance.video)+"/"+str(randint(1,3))
             }
         
         }
