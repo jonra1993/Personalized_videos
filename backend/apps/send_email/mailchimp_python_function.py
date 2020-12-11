@@ -11,24 +11,27 @@ import apps.send_email.configure as configure
 from string import Template
 from mailchimp_marketing import Client
 from mailchimp_marketing.api_client import ApiClientError
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # =============================================================================
 # authentication
 # =============================================================================
 
-MC_API_KEY = configure.MC_API_KEY
-MC_USER_NAME = configure.MC_USER_NAME
-MC_SERVER = configure.MC_SERVER
+MC_API_KEY = os.getenv('MC_API_KEY'),
+MC_USER_NAME = os.getenv('MC_USER_NAME')
+MC_SERVER = os.getenv('MC_SERVER')
 
 mailchimp =Client()
 mailchimp.set_config({
-  "api_key": MC_API_KEY,
-  "server": MC_SERVER
+  "api_key": os.getenv('MC_API_KEY'),
+  "server": os.getenv('MC_SERVER')
 })
 
 
-response = mailchimp.ping.get()
-print(response)
+# response = mailchimp.ping()
+# print(response)
 
 # =============================================================================
 #a audience creation

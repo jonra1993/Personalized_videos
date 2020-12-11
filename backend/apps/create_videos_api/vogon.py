@@ -45,7 +45,7 @@ import subprocess
 import tempfile
 import time
 from django.core.files.storage import default_storage
-from apps.files.models import Videos, Files
+from apps.files.models import Videos, Files, Template
 from oauth2client.tools import argparser
 from django.conf import settings
 from django.core.files.storage import default_storage
@@ -120,10 +120,16 @@ def generate_video(config, row, row_num, project_dir):
     text_overlays = replace_vars_in_overlay(config['text_lines'], row)
     complex_filters, txt_input_files = filter_strings(image_overlays, text_overlays)
     img_args = image_inputs(image_overlays, project_dir, txt_input_files)
+ 
+ 
     output_video = replace_vars(config['output_video'], row)
+
     # output_video = 'https://jenny-backend.s3.us-east-2.amazonaws.com/'+output_video
     # output_video = os.path.join(settings.BASE_DIR, project_dir, output_video)
-    base_video = os.path.join(project_dir, "assets", config['video'])
+    # base_video = os.path.join(project_dir, "assets", config['video'])
+    video = Template.objects.get(name= row['Video'])
+    base_video = 'https://jenny-backend.s3.us-east-2.amazonaws.com/'+video.video_base.name
+    # base_video = File(video.video_base)..
     audio_video = os.path.join(project_dir, "assets", config['audio'])
     if 'ffmpeg_path' in config:
         ffmpeg = config['ffmpeg_path']
@@ -194,8 +200,8 @@ def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executa
     """
     # args = ([executable, '-y', '-i', input_video] + img_args +
 
-    if input_video[0] != "/":
-        input_video = os.path.join(program_dir, input_video)
+    # if input_video[0] != "/":
+    #     input_video = os.path.join(program_dir, input_video)
     ####### SIN AUDIO ######################
     # args = ([executable, '-y', '-i', input_video]+ img_args +[
     #   '-map',' 1','-codec', 'copy','-shortest', output_video] )    

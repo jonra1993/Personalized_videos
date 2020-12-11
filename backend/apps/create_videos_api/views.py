@@ -108,6 +108,7 @@ class CreatevideosView(APIView):
         print(data)
         lines = enumerate(data)
         for i, row in lines:
+            print(row)
             video = vogon.generate_video(config, row, (i + 1), project_dir)
             # video = vogon.generate_video(config, data[1],2, project_dir)
             print("VIDEO PATH", video)
