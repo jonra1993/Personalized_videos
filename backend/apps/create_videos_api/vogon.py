@@ -128,7 +128,7 @@ def generate_video(config, row, row_num, project_dir):
     # output_video = os.path.join(settings.BASE_DIR, project_dir, output_video)
     # base_video = os.path.join(project_dir, "assets", config['video'])
     video = Template.objects.get(name= row['Video'])
-    base_video = 'https://jenny-backend.s3.us-east-2.amazonaws.com/'+video.video_base.name
+    base_video = video.video_base.url
     # base_video = File(video.video_base)..
     audio_video = os.path.join(project_dir, "assets", config['audio'])
     if 'ffmpeg_path' in config:
@@ -203,15 +203,15 @@ def run_ffmpeg(img_args, filters, input_video, output_video,audio_video, executa
     # if input_video[0] != "/":
     #     input_video = os.path.join(program_dir, input_video)
     ####### SIN AUDIO ######################
-    # args = ([executable, '-y', '-i', input_video]+ img_args +[
-    #   '-map',' 1','-codec', 'copy','-shortest', output_video] )    
+    args = ([executable, '-y', '-i', input_video]+ img_args +[
+      '-map',' 1','-codec', 'copy','-shortest', output_video] )    
     # args = ([executable, '-y', '-i', input_video] + img_args +
     #         ['-filter_complex', ';'.join(filters),'-map',' 5','-shortest', output_video])
 
     ############# ESTE SI FUNCIONA###
     ## map es el total de textooooo+imagenes+1
-    args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
-            ['-filter_complex', ';'.join(filters),'-map',' 6','-shortest', output_video])
+    # args = ([executable, '-y', '-i', input_video] + img_args +['-i',audio_video]+
+    #         ['-filter_complex', ';'.join(filters),'-map',' 6','-shortest', output_video])
 
     print("*********************** FFMPEG LIST ARG")
     print(" ".join(args))
